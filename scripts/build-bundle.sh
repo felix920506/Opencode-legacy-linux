@@ -12,18 +12,32 @@
 # anywhere those libraries are present at the expected paths.
 #
 # Environment variables:
-#   OPENCODE_VERSION  opencode release tag to package        (default: v1.17.11)
+#   OPENCODE_VERSION  opencode release tag to package, or "latest" to resolve
+#                     the newest release                      (default: latest)
 #   OUT_DIR           directory for the finished tarball      (default: dist)
 set -eu
 
-OPENCODE_VERSION="${OPENCODE_VERSION:-v1.17.11}"
+OPENCODE_VERSION="${OPENCODE_VERSION:-latest}"
 OUT_DIR="${OUT_DIR:-dist}"
 ASSET="opencode-linux-x64-baseline-musl.tar.gz"
 BUNDLE_NAME="opencode-bundle"
-BASE_URL="https://github.com/sst/opencode/releases/download"
+REPO="sst/opencode"
+BASE_URL="https://github.com/${REPO}/releases/download"
 
 echo ">> Installing build dependencies (curl, tar, musl, libstdc++, libgcc)"
 apk add --no-cache curl tar musl libstdc++ libgcc >/dev/null
+
+if [ "$OPENCODE_VERSION" = "latest" ]; then
+  echo ">> Resolving latest opencode release"
+  OPENCODE_VERSION="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" \
+    | grep -oE '"tag_name" *: *"[^"]*"' | head -n1 \
+    | sed -E 's/.*: *"([^"]+)".*/\1/')"
+  if [ -z "$OPENCODE_VERSION" ]; then
+    echo "!! Failed to resolve latest release tag" >&2
+    exit 1
+  fi
+  echo ">> Latest is ${OPENCODE_VERSION}"
+fi
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT

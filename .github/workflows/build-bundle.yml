@@ -21,9 +21,9 @@ on:
   workflow_dispatch:
     inputs:
       opencode_version:
-        description: "opencode release tag to package (e.g. v1.17.11)"
+        description: "opencode release tag to package, or 'latest'"
         required: false
-        default: "v1.17.11"
+        default: "latest"
 
 env:
   ALPINE_IMAGE: "alpine:3.19"
@@ -42,7 +42,7 @@ jobs:
           if [ -z "$v" ]; then
             case "${{ github.ref }}" in
               refs/tags/*) v="${{ github.ref_name }}" ;;
-              *)           v="v1.17.11" ;;
+              *)           v="latest" ;;
             esac
           fi
           echo "version=$v" >> "$GITHUB_OUTPUT"
