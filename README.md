@@ -50,9 +50,22 @@ tar -xzf opencode-v1.17.11-centos7-bundle.tar.gz
 ### CI (GitHub Actions)
 
 `.github/workflows/build-bundle.yml` builds the bundle in an Alpine container,
-tests it in a real CentOS 7 container, and (on `v*` tag pushes) attaches the
-tarball to a GitHub Release. Run it manually from the Actions tab
-(**workflow_dispatch**) with an `opencode_version` input.
+tests it across a matrix of legacy distros, and (on `v*` tag pushes) attaches
+the tarball to a GitHub Release. Run it manually from the Actions tab
+(**workflow_dispatch**) with an `opencode_version` input, on pushes to `master`,
+or by pushing a `v*` tag.
+
+The bundle ships its own musl runtime, so it must run regardless of the host
+libc. The test matrix covers a wide glibc range on distros still commonly in
+deployment:
+
+| Distro | glibc |
+|--------|-------|
+| CentOS 6 | 2.12 |
+| CentOS 7 | 2.17 |
+| Amazon Linux 2 | 2.26 |
+| Ubuntu 18.04 | 2.27 |
+| Debian 10 (buster) | 2.28 |
 
 ### Locally
 
