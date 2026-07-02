@@ -12,6 +12,8 @@ name: Build opencode CentOS 7 bundle
 
 on:
   push:
+    branches:
+      - master
     tags:
       - "v*"
   # pull_request:
