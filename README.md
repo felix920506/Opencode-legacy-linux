@@ -73,5 +73,5 @@ docker run --rm -e OUT_DIR=/work/dist \
 | Path | Purpose |
 |------|---------|
 | `scripts/build-bundle.sh` | Downloads opencode, gathers musl + libstdc++ + libgcc, assembles and tars the bundle. |
-| `scripts/test-bundle.sh`  | Smoke test: extracts the tarball and runs `opencode --version`. |
+| `scripts/test-bundle.sh`  | End-to-end test: checks `--version`, then starts the headless server and queries its `/config` and `/doc` (OpenAPI) endpoints to prove the runtime genuinely works. |
 | `.github/workflows/build-bundle.yml` | CI: build → test → release. |
