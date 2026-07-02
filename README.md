@@ -56,14 +56,15 @@ the tarball to a GitHub Release. Run it manually from the Actions tab
 or by pushing a `v*` tag.
 
 The bundle ships its own musl runtime, so it must run regardless of the host
-libc. The test matrix covers a wide glibc range on distros still commonly in
-deployment:
+libc. The test matrix covers a wide glibc range on legacy distros people
+realistically still log into and use interactively (old enterprise
+workstations, build servers, jump hosts, aging dev boxes):
 
 | Distro | glibc |
 |--------|-------|
 | CentOS 6 | 2.12 |
 | CentOS 7 | 2.17 |
-| Amazon Linux 2 | 2.26 |
+| Ubuntu 16.04 | 2.23 |
 | Ubuntu 18.04 | 2.27 |
 | Debian 10 (buster) | 2.28 |
 

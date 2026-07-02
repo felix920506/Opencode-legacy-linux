@@ -1,7 +1,7 @@
 #!/bin/sh
 # Smoke-test a built bundle. Meant to run inside a legacy glibc Linux container
-# (CentOS 6/7, Amazon Linux 2, Ubuntu 18.04, Debian 10, ...) to prove the
-# bundle is self-contained and independent of the host libc.
+# (CentOS 6/7, Ubuntu 16.04/18.04, Debian 10, ...) to prove the bundle is
+# self-contained and independent of the host libc.
 #
 # Beyond a trivial --version print, this actually starts the opencode HTTP
 # server and queries its API. That exercises the real Bun runtime: the event
@@ -20,9 +20,10 @@ OUT_DIR="${OUT_DIR:-dist}"
 
 fail() { echo "!! $1" >&2; exit 1; }
 
-# Some minimal base images (notably Amazon Linux 2) ship without tar and/or
-# gzip, which are needed to unpack the bundle. Install any that are missing,
-# best-effort, with whatever package manager is present.
+# Some minimal base images ship without tar and/or gzip, which are needed to
+# unpack the bundle. Install any that are missing, best-effort, with whatever
+# package manager is present. (No distro in the current test matrix needs this,
+# but it keeps the script usable on arbitrary minimal images.)
 ensure_archive_tools() {
   command -v tar >/dev/null 2>&1 && command -v gzip >/dev/null 2>&1 && return 0
   echo ">> tar/gzip not found; installing via the distro package manager"
