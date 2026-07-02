@@ -14,10 +14,10 @@ on:
   push:
     tags:
       - "v*"
-  pull_request:
-    paths:
-      - "scripts/**"
-      - ".github/workflows/build-bundle.yml"
+  # pull_request:
+  #   paths:
+  #     - "scripts/**"
+  #     - ".github/workflows/build-bundle.yml"
   workflow_dispatch:
     inputs:
       opencode_version:
